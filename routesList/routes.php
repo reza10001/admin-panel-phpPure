@@ -1,4 +1,5 @@
 <?php
 
 
-$router->get('p','App\Controllers\RegisterController@create');
+$router->get('register','App\Controllers\RegisterController@create');
+$router->get('login','App\Controllers\LoginController@login');
