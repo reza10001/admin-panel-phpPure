@@ -1,6 +1,6 @@
 <?php
 namespace Traits;
-trait Redirect
+Trait Redirect
 {
 protected function redirect($url){
     

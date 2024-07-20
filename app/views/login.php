@@ -11,6 +11,7 @@
     <label class="form-label" for="form2Example1">Email address</label>
   </div>
 
+  <?php \Traits\Session_helpers::csrf(); ?>
   <!-- Password input -->
   <div data-mdb-input-init class="form-outline mb-4">
     <input type="password" name="password" id="form2Example2" class="form-control" />

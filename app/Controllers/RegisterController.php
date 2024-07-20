@@ -4,43 +4,47 @@ namespace App\Controllers;
 use App\Controllers\Controller;
 use App\Models\User;
 
-require '../blogi/traits/session_helper.php';
 
 class RegisterController extends Controller{
     public function create(){
-
+  
         $this->view('register');
     }
     public function store(){
 
-        foreach($_POST as $key=>$val){
-            $_POST[$key] = htmlentities($val);
-        }
-        $data = [
-            'username' => trim($_POST['username']),
-            'email' => trim($_POST['email']),
-            'password' => trim($_POST['password']),
-            'repeatPassword' => trim($_POST['repeatPassword'])
-        ];
-  
+
+        // foreach($_POST as $key=>$val){
+        //     $_POST[$key] = htmlentities($val);
+        // }
+        
+      
+        // $data = [
+        //     'username' => $_POST['username'],
+        //     'email' => $_POST['email'],
+        //     'password' => $_POST['password'],
+        //     'repeatPassword' => $_POST['repeatPassword']
+        // ];
+        
+
+        $data = $this->purg_post_request($_POST);
+    //    echo '<pre>';
+    //     var_dump($data);
+    //     echo '</pre>';
+    //     exit;
         if(empty($data['username']) || empty($data['email']) 
         || empty($data['password']) || empty($data['repeatPassword'])){
-            flash("register",'Please fill out all inputs');
             $this->back();
         } 
-        //   echo 'Heloooooooooooooooo';
-        // exit();
+
 
         if(!filter_var($data['email'],FILTER_VALIDATE_EMAIL)){
-            flash("register","Invalid Email");
             $this->redirect("../signup.php");
         }
         if(strlen($data['password'])<6){
-            flash("register","Invalid password");
             $this->back();
         }
         else if($data['password'] !== $data['repeatPassword']){
-            flash("register","Passwords don't match");
+            // flash("register","Passwords don't match");
             $this->back();
         }
       
@@ -55,7 +59,6 @@ class RegisterController extends Controller{
         else{
             die("Something went wrong");
         }
-        // $_POST = filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING)
     
        
     }

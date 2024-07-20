@@ -8,8 +8,10 @@ trait View
         if($vars)
             extract($vars);
         $path = realpath(dirname(__FILE__,2).'/app/views/'.$dir.'.php');
-        
+      
         if(file_exists($path)){
+            // if($vars)
+            //     $vars;
            return require_once($path);
         }
      else {
