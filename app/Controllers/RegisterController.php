@@ -8,7 +8,7 @@ require '../blogi/traits/session_helper.php';
 
 class RegisterController extends Controller{
     public function create(){
-    
+
         $this->view('register');
     }
     public function store(){
@@ -22,6 +22,7 @@ class RegisterController extends Controller{
             'password' => trim($_POST['password']),
             'repeatPassword' => trim($_POST['repeatPassword'])
         ];
+  
         if(empty($data['username']) || empty($data['email']) 
         || empty($data['password']) || empty($data['repeatPassword'])){
             flash("register",'Please fill out all inputs');
@@ -29,27 +30,27 @@ class RegisterController extends Controller{
         } 
         //   echo 'Heloooooooooooooooo';
         // exit();
-        if(!preg_match("/^[a-zA-Z0-9]*$/",$data['usersUid'])){
-            flash("register","Invalid username");
-           $this->back();
-        }
-        if(!filter_var($data['usersEmail'],FILTER_VALIDATE_EMAIL)){
+
+        if(!filter_var($data['email'],FILTER_VALIDATE_EMAIL)){
             flash("register","Invalid Email");
             $this->redirect("../signup.php");
         }
-        if(strlen($data['usersPwd'])<6){
+        if(strlen($data['password'])<6){
             flash("register","Invalid password");
             $this->back();
         }
-        else if($data['usersPwd'] !== $data['pwdRepeat']){
+        else if($data['password'] !== $data['repeatPassword']){
             flash("register","Passwords don't match");
             $this->back();
         }
-        $data['usersPwd'] = password_hash($data['usersPwd'],PASSWORD_DEFAULT); 
+      
+        $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT); 
 
         //Register User
-        if($this->userModel->register($data)){
-            $this->redirect("app/views/login.php");
+        $user = new User;
+        if($user->createUser($data)){
+   
+            return $this->redirect("login");
         }
         else{
             die("Something went wrong");
